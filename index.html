@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 хурууны бичих чадварын дасгал - 1-р сургууль</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #172d5b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #333;
+    }
+
+    /* Дээд гарчиг */
+    .top-header {
+      color: #ffffff;
+      text-align: center;
+      padding: 14px 20px;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      padding: 0 24px 24px 24px;
+      gap: 20px;
+    }
+
+    /* Зүүн талын цэс */
+    .sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .school-logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 2px solid #facc15;
+    }
+
+    .school-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .menu-title {
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .nav-list {
+      list-style: none;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      color: #ffffff;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .nav-btn.active {
+      background: rgba(255, 255, 255, 0.25);
+      font-weight: 700;
+      box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Баруун талын талбар */
+    .workspace {
+      flex: 1;
+      background: #f8fafc;
+      border-radius: 18px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      overflow-y: auto;
+    }
+
+    /* Сурагчийн бүртгэлийн мөр */
+    .student-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #ffffff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      align-items: center;
+    }
+
+    .student-bar .input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .student-bar label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .student-bar input {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .student-bar input:focus {
+      border-color: #4f46e5;
+    }
+
+    .btn-reset-student {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #64748b;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-reset-student:hover {
+      background: #fee2e2;
+      color: #ef4444;
+      border-color: #fca5a5;
+    }
+
+    /* 1. Нүүр хуудас (Гарны зураг) */
+    .home-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .keyboard-img-container {
+      width: 100%;
+      max-width: 980px;
+      background: #ffffff;
+      padding: 14px;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .keyboard-img-container img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      display: block;
+    }
+
+    /* 2. Дасгалын талбар */
+    .exercise-view {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .top-panel {
+      display: flex;
+      gap: 14px;
+    }
+
+    .correct-card {
+      flex: 2;
+      background: #eafaf1;
+      border: 1.5px solid #abebc6;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .correct-card .label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e824c;
+      letter-spacing: 0.5px;
+    }
+
+    .correct-card .number {
+      font-size: 46px;
+      font-weight: 800;
+      color: #1b7e46;
+      line-height: 1.1;
+    }
+
+    .control-card {
+      flex: 1.2;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .time-select-group label {
+      display: block;
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .time-input-wrap {
+      display: flex;
+      align-items: center;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0 10px;
+    }
+
+    .time-input-wrap input {
+      border: none;
+      background: transparent;
+      width: 100%;
+      padding: 6px 4px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #1e293b;
+      outline: none;
+    }
+
+    .btn-start {
+      background: #4f46e5;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-start:hover {
+      background: #4338ca;
+    }
+
+    .text-display-box {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 160px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 21px;
+      line-height: 1.8;
+      user-select: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .word {
+      display: inline-block;
+      margin-right: 8px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: #334155;
+    }
+
+    .word.active {
+      background: #e0e7ff;
+      border-bottom: 2px solid #4f46e5;
+      color: #1e1b4b;
+    }
+
+    .word.correct { color: #16a34a; }
+    .word.incorrect { color: #dc2626; background: #fee2e2; }
+
+    .input-box {
+      width: 100%;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 18px;
+      background: #ffffff;
+      outline: none;
+    }
+
+    .input-box:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
+
+    .stats-panel {
+      display: flex;
+      gap: 14px;
+    }
+
+    .stat-card {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+
+    .stat-card .val {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .val-mistake { color: #e11d48; }
+    .val-speed { color: #4f46e5; }
+    .val-time { color: #d97706; }
+
+    .sheet-status {
+      font-size: 13px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    .sheet-status.success {
+      background: #dcfce7;
+      color: #15803d;
+      display: block;
+    }
+    .sheet-status.loading {
+      background: #fef3c7;
+      color: #b45309;
+      display: block;
+    }
+    .sheet-status.error {
+      background: #fee2e2;
+      color: #b91c1c;
+      display: block;
+    }
+
+    /* 3. Бүртгэлийн хуудас */
+    .records-view {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .config-card {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .config-card label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .config-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .config-row input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .btn-save-cfg {
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-save-cfg:hover { background: #0369a1; }
+
+    .table-container {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      overflow-x: auto;
+      max-height: 420px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:hover {
+      background: #f8fafc;
+    }
+
+    .actions-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-export {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-export:hover { background: #059669; }
+
+    .btn-clear {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-clear:hover { background: #dc2626; }
+  </style>
+</head>
+<body>
+
+  <div class="top-header" id="currentCategoryTitle">Ерөнхий боловсролын нэг дүгээр сургууль</div>
+
+  <div class="main-container">
+    <!-- Зүүн талын цэс -->
+    <div class="sidebar">
+      <div class="school-logo">
+        <img src="logo_3.jpg" alt="Лого" onerror="this.onerror=null; this.src='logo_2.jpg'; this.onerror=function(){this.src='logo.jpg';};">
+      </div>
+      <div class="menu-title">Хурд</div>
+      <ul class="nav-list">
+        <li><button class="nav-btn active" onclick="selectCategory('home', this)">Нүүр хуудас</button></li>
+        <li><button class="nav-btn" onclick="selectCategory('middle', this)">Дунд эгнээ</button></li>
+        <li><button class="nav-btn" onclick="selectCategory('top_mid', this)">Дээд ба дунд эгнээ</button></li>
+        <li><button class="nav-btn" onclick="selectCategory('bottom_mid', this)">Дунд ба доод эгнээ</button></li>
+        <li><button class="nav-btn" onclick="selectCategory('grammar', this)">Зөв бичих дүрмийн үгс</button></li>
+        <li><button class="nav-btn" onclick="selectCategory('records', this)">Бүртгэл</button></li>
+      </ul>
+    </div>
+
+    <!-- Баруун талын талбар -->
+    <div class="workspace">
+
+      <!-- Сурагчийн мэдээллийн мөр -->
+      <div class="student-bar" id="studentBar">
+        <div class="input-group">
+          <label>Анги бүлэг:</label>
+          <input type="text" id="studentGrade" placeholder="Жишээ: 8А">
+        </div>
+        <div class="input-group">
+          <label>Сурагчийн нэр:</label>
+          <input type="text" id="studentName" placeholder="Нэрээ бичих">
+        </div>
+        <div class="input-group">
+          <label>Компьютерийн №:</label>
+          <input type="text" id="pcNumber" placeholder="Жишээ: PC-05">
+        </div>
+        <button type="button" class="btn-reset-student" onclick="clearAllStudentInputs()" title="Бүх талбарыг арилгах">Бүгдийг арилгах</button>
+      </div>
+
+      <!-- 1. Нүүр хуудас: gar.jpg зураг -->
+      <div class="home-view" id="homeView">
+        <div class="keyboard-img-container">
+          <img src="gar.jpg" alt="Гарын хурууны байрлал" onerror="this.onerror=null; this.src='Gemini_Generated_Image_3p79gc3p79gc3p79.jpg'; this.onerror=function(){this.src='Slide2.JPG';};">
+        </div>
+      </div>
+
+      <!-- 2. Дасгалын хэсэг -->
+      <div class="exercise-view" id="exerciseView">
+        <div class="top-panel">
+          <div class="correct-card">
+            <span class="label">ЗӨВ БИЧСЭН ҮГ</span>
+            <span class="number" id="correctWordsCount">0</span>
+          </div>
+          <div class="control-card">
+            <div class="time-select-group">
+              <label for="timeDuration">⏱ Хугацаа сонгох (сек):</label>
+              <div class="time-input-wrap">
+                <input type="number" id="timeDuration" value="300" min="10" max="3600">
+                <span style="color:#64748b; font-size:14px;">сек</span>
+              </div>
+            </div>
+            <button class="btn-start" id="startBtn" onclick="toggleExercise()">
+              ▶ Дасгалыг эхлэх
+            </button>
+          </div>
+        </div>
+
+        <div class="text-display-box" id="textDisplay">
+          Дээрх "Эхлэх" товчийг дарж бичлэгээ эхэлнэ үү.
+        </div>
+
+        <input type="text" class="input-box" id="typingInput" placeholder="Энд бичиж эхэлнэ үү..." disabled autocomplete="off" autocapitalize="off" spellcheck="false">
+
+        <div class="stats-panel">
+          <div class="stat-card">
+            <div class="label">⚠️ Алдаа</div>
+            <div class="val val-mistake" id="mistakeCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">⚡ Хурд (WPM)</div>
+            <div class="val val-speed" id="wpmCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">⌛ Үлдсэн цаг</div>
+            <div class="val val-time" id="timeLeft">0с</div>
+          </div>
+        </div>
+
+        <div id="sheetStatus" class="sheet-status">Google Sheet рүү дүн илгээж байна...</div>
+      </div>
+
+      <!-- 3. Бүртгэлийн хуудас -->
+      <div class="records-view" id="recordsView">
+        <div class="config-card">
+          <label>🔗 Google Sheets Apps Script Web App URL тохируулах:</label>
+          <div class="config-row">
+            <input type="text" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
+            <button class="btn-save-cfg" onclick="saveScriptUrl()">Хадгалах</button>
+          </div>
+          <p style="font-size:12px; color:#64748b;">(Энд Google Apps Script-ийн Deploy Web App URL-ээ оруулснаар сурагчийн дүн автоматаар хүснэгт рүү хадгалагдана)</p>
+        </div>
+
+        <div class="actions-bar">
+          <button class="btn-export" onclick="exportToCSV()">📥 Excel (CSV) татах</button>
+          <button class="btn-clear" onclick="clearLocalRecords()">🗑 Бүртгэл цэвэрлэх</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Огноо</th>
+                <th>Анги</th>
+                <th>Сурагчийн нэр</th>
+                <th>Компьютер</th>
+                <th>Дасгал</th>
+                <th>Зөв үг</th>
+                <th>Алдаа</th>
+                <th>Хурд (WPM)</th>
+                <th>Хугацаа</th>
+              </tr>
+            </thead>
+            <tbody id="recordsTableBody">
+              <tr>
+                <td colspan="9" style="text-align:center; color:#94a3b8; padding:20px;">Одоогоор бүртгэл хоосон байна.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const rawTexts = {
+      middle: `Болд бодлоороо оролдлоо бордоо өөрөө орой бор доор долоо ой оллоо боролдой орлоод өөд өөрөө өдрөөр лоолой ор өл ол бод оролд ойрдоо дөрөө олдлоо боол бодлоор ойд дорой болор бороо дөл дөрөө өрөө өрөөл оройд олоод болоод бор өөрөөр рыб орыб одый бай байр ах ахлах алхах айл хайр хайхрах паар пөөх поох пор под пад байрлах бөөрөнхийлөх хороолол парад болдоо бадрах бадрал бодрол алдар балар болор харлах халдах бордох хоолой хараа хөрөө дараа папа халх өрөх байх одоо хоолоо ол ойр ойроор алдал хөл доороо хай бөх бөхөөрөө бөөрлө пад пад пад орох пай пай пай холд айл өрх болох арай ахар ахраар алхаа алхах хөөл дараах хойдох хойдхоор аа аад аар аал аахар адар адраа ал алд алдаа алдар алдрай алпар араа араад араал араалд арал аралдаа ард ах ахад ахай ахал ахар ахард ахарла баа баар баараа бадар бал балад балдар бар бараа бараад бараал барай барал бард бардаа бахар бахархал боо боод боодол боол бодол бодлоо боор бор борд бордоо борло болор болороор бөөр даа даадар даал даар даараа дадар дал далаа далал далар дар дараа дарал дарах дардаа доо доод доодол доор доорд дор дорд дорой дорол дөрөө дөрөөл дөрөөлд дөрөөлөө лаа лаад ладар лар лоо лоодол лоороо лор паа паар паараа пар параа поо хаа хаад хаадаа хаадай хаал хаалар хаар хадаа хадал хадар хадраа хай хайл хайлаа хайр хайраа хайрдаа хал халаа халдар хар хараа хараад хараал хараар харай харал хой хойл хойр хол холоо холор хоо хоол хоолло хоолой хоолойло хоор хоороо хор хороо хороол хороолол хөө хөөд хөөл хөөлөө хөөр хөөрөө хөр хөрөө хөрөөд хөрөөл`,
+      top_mid: `нг гө өү нү эж жу уц эц нх хр но нл нд гх гр го гл гп өх өр өо өл өд өп хү үр үо үл үд ур жө жы жй уа уэ уб уы ца цө цб цы цй гоц гүц дош дөл дух дүн дүр дэд жад жөр үйлдэл үнэ ханш үүд хаалга хүж арц цай цүй цал цул уур ууш гүүр гүнж даалуу дарш доош шөнө дунд пүрш үдэш үнэг үхэр хурц цонх цана жаргал гуай жаран жаргалан гэрэл гөлгөө дэгээ энгэр эхнэр хорголж нарлаг борлог данхар дархан драп дорж дрож поожоо дах драпны ой зүйл зүүд зун цаг зураг хуар фабрика форд карт кадр дагз дайз жүнз жунз жүрж бааз клуб граф цүнх франц пүнз зэрэг задгай залаа ганзага зуншлага газар зүй бөхөлзүүл бөөрөлзгөнө зургаадугаар кроп кабала кабан каждый казар казах какао кайла как канц фой фазан фагон фабула фабкор фарфор фарш фаш щорс щётка щека щекий щит щука европ фермд щефлин редакци техник офицер цемент секцийн кабинет процесс объектод километр механикжуулагч империализм шахмалаар цомхотголын уртрагийг төөрөг төөрийг тойрог тойрыг дүүрэг дүүрийг бөмбөг бөмбөгийг бөмбөлөг бөмбөлгийг бөмбөрцөг бөмбөрцгийг дугариг дугаригийг цагариг цагаригийг баялгийг урамшууллын гаргийг төрөлхтний эрхтний цаст хөрстийн тотго хурга ботго нударга шударга азарга аварга гадарга ундарга адасга шамарга сагаларга ялгалла адъяа бүрэлдэхүүн батажна бэхэжнэ баяжна хотожно хусаж засаж хасаж төлбөр угтвар үржвэр бодъё тогтъё онсого бодлого авч өгч хүрэх гарч хугарч тойрч хөөрч бутарч цоожил ахал бутал Балданг холтосло хавтасла цоол хагал хөөл хугал хөдлөнгө хөрөнгө хөшингө бэртэнгэ туршлага хашлага дамжлага доторх урдуурх хойгуурх хойгуурхыг олонх олонхын цаадах цаадхыг хойдох хойдхоор урдах урдахыг дараах удаах гаднах гаднахыг цаанах цаанахыг тогосыг тогтохыг багыг асгыг шаагж шуугж урьж урилга захидал цохио бодит авлига халти бөгцгөнөх бэлэг бэлгэ шарагчин чацуу төлөг зусаг айхавтар отог номхотгол цомхотгол цэрвүү төвөд төв утас хөлөг хүлэг шар арга араг шартай шаргуу дарвагар`,
+      bottom_mid: `авааль авсаар авьяас адисад адисал адистид аймхай айхавтар алавтар албадал алдалт алдрай алхалт алхдал амбаар амлалт амралт амьдай амьдар амьдас араалд аралди архидалт архираа арчилт арчлаа арчлаас арчлалт арьсал арьяат асаалт асралт атираа атираас атираат ачаалад ачилт ачлалт аяарла аярла аясад баавай баавар баавард баасад баатал баатар бадарла бадарч байдал байдас байлдаа байлдаат баймал байрла байрлалт балайр балайт баларт балбал балбар балбас балбач балдар балиар балиарт балмад балмадал балтад балтай балтал балтас балтач балхай балхас бамбай бамбар бамбард бамбарла бамбас бараад бараал барамид барамнас барбад барбор барвай бардаат бардам бардамла бардамт бариас бариат бариач бариачил баривч баривчил барилд барилдаа барилт баримал барималд барималч баримжаа баримжаал баримт баримтал баримтат баримтлал бармай бармал барсай барсхий бартаа бартаад бартаат бархир бархираа бархиралт барчий баталбар батлалт бахард бахардал бахархал бахдал бахимд бахираа бахирла бачимд бачимдал баярла баясал баясалт бийваа бийвч бодгаль бодгальс бодгальч бодгальчил бодгаяа бодисад бодолт бодрол бойдор бойпор бойрло болорт болхивтар болхид бомбой бомбоо бомбос боодол боодолло боолт боолчил боолчлол боольхой боольхойл боольхойт боомил боомло боомтол боомьд боорло боосор боохой боохолдой борвид борвил бордоо бордмол бордолт борлолт боровтор боролдой бороол бороот бороохой бороохойд босоод бохиор бохиот бохирд бохирдмол бохирдол бохирдолт бохирло бохирт бөөрөвч бөөст бөсөл бөхөвтөр бөхөвч бөхөө бөхөс бядар бялард бялбал бялбар бялдуучил бялдуучлал бялтад бялтал бялхай бялхар бялхас бяралх бярла бясаа ваараа ваарла даавар дааварла даадар даадиа даамай даамайвтар даамайд даамайр даамайт даамал даамхай даапаа даапаал даапааламхай даарамхай даахид даахил даахир даахираа даачаа даваад даваар давалт давраа давраач давралт даврамхай давсал давсар давсхай давтал давталт давтмал давхай давхар давхард давхардал давхарла давхарлаас давхарлал давхий давхил давхилт давхраа давхраас давхраат давхраатал давхрал давчивтар давчид давчир давьдаал давьдар давьчаа дадмал дайвал дайвалт дайвамхай дайвар дайварла дайвас дайлаас дайлаасал даймал дайрал дайралт дайсал дайтал дайчил дайчлалт далавч далавчид далавчил далайлт далайч далбаа далбаад далбай далбар далбарай далбархай далбас далбий далбир далбирхай далбис далдаа далдавч далдавчил далдад далдай далдал далдалхийл далдир далдич далдлалт далиар далий далимд далимч дамаар дамард дамарла дамбай дараавтар дараал дараалал дараас дараах дараач даравч даралт даралхийл дарамт дарамтал дарвай дарвас дарвиа дарвилт дарвимхай дардай дардал дардас дарлал дарламхай дармал дармалд дармалла дарсай даруйвчил дархал дархад дархач дархир дархис дархлаа дархлал дарчаа дарчил дасал дасамхай дахивар дахилт дахлай даяар даялал аярла довой довор довтол довтолт додий додомд долдой долдойвтор долдойд долдойл долдойрх долдойч долоовор долооворд долооворт долоодой долоодос долоол долоомтгай домбой домбол домбоо домбос домчил доодох доомбор доомборд доомборч доорд доорх дорвил дорвой дорвос дордой доройвтор доройд доройт доройтол дорсой дотоод доторло доторх дохилт дохиол дохиолбор дохиолол дохиоч дөллө дөлтөс дөрөөвч дөрөөвчил дөрөөл дөрсий дөтөд дөтөл дөтөрхий дөтчил дөхөмчил дудрай дулаавтар дулаад дулаал дулаалт дулаар дулаарал дулааралт дулар дулиа дулиар дураал дурдал дурлал дурлалт дурламхай дурсал дурсалт дурсамж дуртмал дусаадас дусаал дусалт дусвар дуталт дуудаач дуулаач дуулал дуулалт дуулил дуулим дуурай дуурайл дуурайлт дуураймал дуураймхай дуурам дуурил дуурмал дуурсал дуурьс дуусвар ёвроо ёврооч ёвчоо ёдорд ёлбой ёлбос ёломт ёлтой ёлтос ёлхой ёлхос ёмбой ёмбос ёоломхай ёохорд ёохорло ёрдой ёрдос ёроолд ёроолло ёрхой ёслол ёслолт ёсорх ёсорхол ёсчил ёсчлол ёхирд ёхирло ивэрхий ивэрхийд идшил илаарь илхий илчил илчит ирий ирчис ичимхий лаахай лаахайд лаахайл лавайч лавдал лавдар лавир лавлаа лавлал лавламж лавлах лавсаа лавсал лавтал лавтар лайвар лайдаа ламарх ламхай ловолс ловхот ловчил лоймол лувхий луйвар луйвард луйвардал луйварч лууль лухай лүвчил маадай маадар маамуу маарал маарамба маасай маахай мааюур мадаас майлаа майлаал майлалт майлалдаа майламхай маймар маймий майхавч майхай маларх малиад малий малтаас малтаахай малталт малтмал малчирх маралхай мариал марлий марсай мартал мартамхай марчий матаас матаач матамхай матарла матархай матмал махал махбод махий махирла махирс махчил мачий мишил модой модол модот модоч модхой моодой мордол мордомхай морил морчий мохдой мохоод мохоол мохоор мөлий мөлхөө мөлчий мөөхий мөрий мөрөөд мөрөөс мөртөө мөхөөл мөчилд мөчир мөчирх муйхар муйхард муйхарла мултал мултар мултархай мултач мултрамхай мулцай мурийд мурийлт мурчий мурчис мутарла муувтар мууламхай муутуу муухай муухайвтар муухайд муухайр муухайт муучил муушаа муушаал мухард мухардмал мухарла мухирла мухлай мухлайд мухлайл муший оосор оосорло оосорт оочил орвой орвос ориломхай орилоо оримоо оройвтор оройвч оройт оролд оролт оромдол оромхай ороодос ороолт ороомол оруулбар орхидос орхимол орхирол орхиул орхой орчил орчим орчимбар орчуул осолд отолт отоач оторло оторчил охорд охорло очирло өвий өвчил өөлий өөриймс өөрчил өөчил өрвий өрөмд өрөмтүүл өрөөлд өрөөс өртөөч өртөөчил өрүүл өршөө өршөөл өршөөлт өсвөр өхийд өхөөрд өхөөрдөм паадас паарай палий палхай памбай парлий полдой помбой поодой пумбай пүрд пялай пялхай сааваар саалт саальд саальч саамал саарал сааралт саарьт саатал сааталт саахалт саахуу саваа савалт савард савир савлалт саврай савсаа савсар савтар савтархай савуур савхад савхал савхил садаар садард садарла садархай садраа садралт сайвар сайварла саймсар саймсарх саймсраач саймсрал сайрд сайрий сайрмал сайрхаач сайрхал сайтар салаавч салаавчил салаал салаалал салаар салавтар салалт саламла саламхай салархай салбай салбал салбар салбарла салбарлал салбарс салбархай салбиа салдай салдар салдас салиар салиат салмаа салмай салмал салмар салмас салтаа салтаад салтар салтарт салхи салхивч салхид салхил самард самбаа самбаал самбаач самбаачил самбай самбар самбарла самсаа самтав самуур самуурал самхай сараач саравч саравчил сарампай сарваа сарваад сарвай сарвас сарий саримс сарлай сармаахай сармай сармал сармий сарсай сартай сартас саруул саруулс сархад сархай сархиа сархиат сархий сарчий сарьсал сарьст сатаар сахалд сахалмай сахалт сахар сахил сахиул сахиус сахуул сахуут сачий саявтар совир совор содоль соёлт соёлч соёмбо соёод соёол соёолол соёололт соёор соёохой соёрх соёрхол соёхой сойлт соймол солби солбилт солбимол солбио солдив солилт солио солиор солиорол солиот солир солом соодой соорт соортол соосой соотой соохой сорви сорвит сорвитол сорил сорилт соримхай сорио сормуус сормууст соролт соромхай сороол сорсол сортой сортоо сортоол сортос соруул соруулд сорчил сорьс сохой сохол сохор сохоч сочир сочрол сочроо сөөвий сөөлд сөөсий сөөхий сөрвий сөрдий сөрөлт сөхвөр сөхмөл сөхөвч сөхөд сөхөө сөхөр тааваар таавар тааварла таадай таадас таалал тааламж тааламжил таарамж таарла тааруу таахай таахайл таахас таваар тавдай тавиуд тавиур тавлаас тавсай тавтир тавтирс тавхай тавхайвч тавхайд тавхайл тавхайт тавчаа тавчид тайвар тайвуу тайлал тайлалт тайламж тайлбар тайлбарла тайлбарлалт тайлбарч тайралт тайрдас тайрмал талбай талбар талбир талбиу талбиур талий талимаа талимаар талимаат талираа талла талст талтир талтираа талхал талхид талхидал талхит тамаа тамир тамирд тамирдал тамлал тамтал тамтар тамтархай тамхил тамхис тарай таралт тарамд тарвай тарвас тардай тариа тариал тариалалт тариат тарилт таримал тариур тарлаа таруу тархай тархалт тархи тархид тархий тархил тархмал тарчаа тарчил тарчлал тасал тасалбар тасалд тасалдал тасамд тасар тасархай тасархайл тасархайт таслал таслалт тасрал тасралт тасхий татаал татаар татаарь татаас татаасал татавхий татавч татал таталбар таталдаа таталт татар татвас татвар татварла татлаа татмал татрал татууд татууль татуухай тахалт тахар тахарвар тахарч тахиа тахий тахил тахилт тахилч тахим тахимд тахимдал тахимла тахир тахираа тахирд тахирла тахлай тачаа тачаад тачаал тачир тачирд тачирла тачирхай тачуу тийчил товир товло товой товор товруу товруут товхи товхимол товхио товхиос товход товхой товхол товхот товчид товчил товчилбор товчлол товчлоос товчоо товчоол товчруу товьд тодод тодой тодойлой тодол тодор тодорхой тодорхойл тодорхойлолт тодос тодрол тодролт тодруул тодруулалт тодчил тойвор тоймий тоймло тоймч тоймчил тойрло тойролт тойром тойруу тойрууд тойруул тойруулба тойтор толбор толбот толий толил толио толиор толиот толир толло толом толхи тольд тольч томбой томий томил томилолт томир томлой томмол томолт томоос томор томорх томролт томуур томуут томчил томьёо томьёол томьёолбор томьёолол томьёочил тоодой тоолбор тоололт тоомсор тоомсорло тоорло тооровч тоорой тоосод тоосол тоосор тоост тоочил тоочилт торловч торлоос тормой торовч торой тором тороо тороос тортмал торуу тосвор тосод тосол тосуул тотилдой тохий тохил тохио тохиол тохиолдол тохиор тохиос тохир тохирол тохироо тохируулалт тоховч тохой тохойвч тохойл тохойлд тохойр тохом тохомло тохоо тохоос тохор тохуур тохуурх тохуурхал тоюут туйвар туйлбар туйлд туйлдас туйлч туйтар туйхар тулаас тулай тулайр тулайт тулалдаа тулам туламла туламчил тулар тулбал тулбар тулбуур тулиур тултир тултираа тулуур тулхи тумбай тумбайд тумбалай тумбалайд тумдаа тумлай тумлайд тураал тураалд турдас турсаахай туруут турхир турхирал турхиралт турхруу тусад тусал тусалт тусам тусамхай тусархуу тусламхай тутам туувар тууварла туул туулай туулайл туулайчил туулбар туульч туурви туурвил туурай туурайл туурайт тууралт туурт туухай туухайл туухайчил тухай тухайл тухайт тухал тухам тухир тухлай тухлайд туяал туяар туяарал туяат чааваас чавхаахай чавхад чавхай чавхайр чавхдас чавхдасла чавхдаст чавхуур чавхуурх чавчир чадавх чадал чадамж чадвар чадварла чадварт чадларх чадлархуу чадуу чалбай чалчаа чалчаадуу чалчир чалчирла чалчраа чалчраат чамай чамалхай чамар чамарла чамарх чамархай чамбай чамбайдуу чамбайл чамбайр чамла чамлаач чамламхай чарвай чарвас чарла чарлаа чарламхай чармаа чармай чармайлт чахал чахар чахлуур яарал яаралтай явалт явдал явдалтай явуул явуур ядаргаа ядам ярваа ярвай ярвал ярив ярил яриач ярла ярхай ясархуу ястий ястмал`,
+      grammar: `салбарын үндэслэлийг татварын амьдралын малтмалын гүдгэрийг шингэнээс үйлдвэрлэлийн шахмалаар эшлэлийг даярчлалыг цомхотголын олонлогийг уртрагийг цоморлогийг мөнхөждөгийг нөхцөлийн бусдадаа төгсөгчдөдөө сонгогчдодоо мэддэгээ сонирхсноо чавхдасыг гайхширал эрсдэлээр гарал үүсэл төрөл бохирдол хомсдол бахархал гомдол хувирал хувьсал урсгал эрэг эргийг төөрөг төөрийг тойрог тойрыг дүүрэг дүүрийг бөмбөг бөмбөгийг бөмбөлөг бөмбөлгийг бөмбөрцөг бөмбөрцгийг бөжинг дугариг дугаригийг цагариг цагаригийг баялгийг урамшууллын гаргийг төрөлхтний эрхтний цаст хөрстийн савла зөвлө номло салбарла галла малла үзэглэ ажигла гэрлэ цэцэглэ цай байцай хуйцай шанцай амжилтад ололтод сургалтад тотго хурга ботго нударга шударга азарга аварга гадарга ундарга адасга шамарга сагаларга хуурцийг гарцийг бухимдлыг ажлыг бичлийг эрэмзлийг эрдмийг шарагчны буудалда ялгалла ажилла эмээллэ гуравласан дөрөвлөсөн адъяа сумъяа биндэръяа харьяа томьёо товьёг гавьяа бүтээгдэхүүн нэмэгдэхүүн хасагдахуун эзлэхүүн бүрэлдэхүүн батажна бэхэжнэ баяжна хотожно будилна салхилна ажиллана амьдарна мөнхөжнө нисэж хүсэж хусаж засаж нисжээ хүсжээ засжээ хасаж ажиллавар төлбөр татвар салбар хөтөлбөр угтвар үржвэр эдэлбэр бодъё явъя уншъя тоглуулья тогтъё бархиръя нэгэнтээ хоёронтоо гурвантаа дөрвөнтөө олонтоо онсого ансыга ганзага янзага бодлого уншина хөгжинө чадваржина үзэгдэнэ тогтворжино авч өгч хүрэх гарч хугарч тойрч хөөрч бутарч саарч цоожил давсал нууцал ахал товчил бөгжил жаазал цүнхэл бутал үзье хөгжье бүрэлдье нисье дуурайл эрэмзэл хүрээлэнг буланг үзэсгэлэнг Балданг соёолонг хадланг шарагчинг оюутныг ажилтныг шашныг мэргэнийг мэргэжилтнийг үндэслэ холтосло хэлтэслэ хавтасла хувцасла бүтээ саная хэрэглэе тогтооё зовуурь илаарь наалданги зогсонги тогтонги саланги урай уухай дуурай цоорай цоол хагал хөөл хугал тоол баръя захъя таръя тэнгис эрих эрин тэнхим хөдлөнгө хөрөнгө эдлэнгэ хөшингө бэртэнгэ санаачилга сурвалжилга даярчлал даяршил оношилгоо зөвлөгөө лавлагаа эмчилгээ үйлчилгээ сурталчилгаа туршлага хашлага бодлого дамжлага арвагар сарвагар бөндгөр бөндгөнөх гүвгэнэх жирвэгэр тожгонох ирчихийг саначихаар хэлчихээс мэдчихэд ирчхэд саначхав хэлчхэд мэдчихэв өтчхөв доторх урдуурх хойгуурх хойгуурхыг олонх олонхын цаадах цаадхыг хойдох хойдхоор урдах урдахыг нь хойших хойшхыг дараах удаах гаднах гаднахыг цаанах цаанахыг онолыг өнөрийг багажийг тогосыг Гэрэлийг тогтохыг тоглож наадахыг багыг Гомбын шударгаыг асгыг курсийн группийн клубийн борщийг тактикийг аптекийн диаграммын программын километрийн семинарын лекцийн дөрөв дэх долоо дахь арав дахь ёс дэх шаагж шуугж урьж саальчин хольц сарьдаг урилга таримал ахимаг тохилог захидал цохио дохисон бодит цохьчих дохьчих сонгуульгүй Доржсүрэн горьгүй авлига хээл хахууль хахуул загас бэл бэнчин бодит бодис бодгаль бодисад махбод бархирч хашхирах цуурай нэг хоосон байгаль дэлхий Байгал нуур хангарди гарди шувуу халти мөлт бөгцгөнөх бөндгөнөх бүлтгэнэх бөжин бичин жилийн айлдвар гачуур модны мөчир гацуур бэлэг сэлт бэлгэ дэм бэрлийг үг бэлгэ тэмдэг билиг оюун цэцэн мэргэн шашин сургаал бурхан шашин шарагчин жил шарагчин зүсмийн эм амьтан нас чацуу ирэхийн сацуу мэргэ төлөг зусаг төлөг айхавтар дальдрах ганьхрах гуньхрах дугуй муруй мурийлгаж сарийлгаж дуртгалаа дурдъя цоморлогоо гаргая дуурьсъя гарын саарь голын сайр вандан хадаг сандал тарианы вандан хэрэгсэл давилуун идэвхгүй зожиг зогсьдог голдирлоо дагана эрвээхэй дэгдээхэй нисэж маани мэзээм эх орон маань хүрзний иш эш татсан бүтээл нэлийсэн шингэн нил ягаан цэцэг отго жинс овог отог аймаг номхотгол цомхотгол нас нөгчих муу юмтай нөхцөх нурмагрын нулимс шуламс шидэмс цэрвүү холоос сүжгээр өвдөж сүсгээр домнолоо төвөд хэл төв үзэл төвшин амгалан түвшин тогтоох шалгалт усны түвшин титэм тутам үүсвэр үүлдэр гарваль уйланхай уушги хатангир шуухитнах хир буртаг хэр хэмжээ хэд хэчнээн утас хөврөх хөлөг онгоц хүлэг морь нүдний цэцгий цэцгийн тос чандмань эрдэнэ зэндмэнэ тоглоом чармаа нүцгэн чармайн мэрийх увдистай шармигар шар чүдэнзний мод шавж хорхой арга барил араг шээзгий цадиг түүх түүх шастир шартай хичээл шаргуу хүн яажгар ярвагар дарвагар`
+    };
+
+    const categoryTitles = {
+      home: "Гарын хурууны байрлал",
+      middle: "Дунд эгнээ",
+      top_mid: "Дээд ба дунд эгнээ",
+      bottom_mid: "Дунд ба доод эгнээ",
+      grammar: "Зөв бичих дүрмийн үгс",
+      records: "Бүртгэл"
+    };
+
+    let currentCategory = 'home';
+    let wordsList = [];
+    let currentWordIndex = 0;
+    let correctCount = 0;
+    let mistakeCount = 0;
+    let timer = null;
+    let timeLeft = 300;
+    let totalTime = 300;
+    let isRunning = false;
+
+    // Ачааллах үед: Сурагчийн ямар ч өгөгдлийг хадгалахгүй (бүх талбар хоосон эхэлнэ)
+    window.onload = () => {
+      // Хуучин үлдсэн байж болзошгүй кэшийг цэвэрлэх
+      localStorage.removeItem('studentGrade');
+      localStorage.removeItem('studentName');
+      localStorage.removeItem('pcNumber');
+
+      if (localStorage.getItem('googleScriptUrl')) {
+        document.getElementById('scriptUrlInput').value = localStorage.getItem('googleScriptUrl');
+      }
+      renderRecordsTable();
+    };
+
+    // Бүх талбарыг (Анги, Нэр, Компьютерийн дугаар) зэрэг арилгах
+    function clearAllStudentInputs() {
+      document.getElementById('studentGrade').value = '';
+      document.getElementById('studentName').value = '';
+      document.getElementById('pcNumber').value = '';
+      document.getElementById('studentGrade').focus();
+    }
+
+    function saveScriptUrl() {
+      const url = document.getElementById('scriptUrlInput').value.trim();
+      localStorage.setItem('googleScriptUrl', url);
+      alert("Google Apps Script URL амжилттай хадгалагдлаа!");
+    }
+
+    function getScriptUrl() {
+      return localStorage.getItem('googleScriptUrl') || "";
+    }
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function selectCategory(cat, btn) {
+      if (isRunning) stopExercise();
+      currentCategory = cat;
+      document.getElementById('currentCategoryTitle').innerText = categoryTitles[cat];
+
+      const buttons = document.querySelectorAll('.nav-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const studentBar = document.getElementById('studentBar');
+      const homeView = document.getElementById('homeView');
+      const exerciseView = document.getElementById('exerciseView');
+      const recordsView = document.getElementById('recordsView');
+
+      if (cat === 'home') {
+        studentBar.style.display = 'flex';
+        homeView.style.display = 'flex';
+        exerciseView.style.display = 'none';
+        recordsView.style.display = 'none';
+      } else if (cat === 'records') {
+        studentBar.style.display = 'none';
+        homeView.style.display = 'none';
+        exerciseView.style.display = 'none';
+        recordsView.style.display = 'flex';
+        renderRecordsTable();
+      } else {
+        studentBar.style.display = 'flex';
+        homeView.style.display = 'none';
+        exerciseView.style.display = 'flex';
+        recordsView.style.display = 'none';
+        resetExerciseState();
+      }
+    }
+
+    function resetExerciseState() {
+      correctCount = 0;
+      mistakeCount = 0;
+      currentWordIndex = 0;
+      document.getElementById('correctWordsCount').innerText = '0';
+      document.getElementById('mistakeCount').innerText = '0';
+      document.getElementById('wpmCount').innerText = '0';
+
+      const dur = parseInt(document.getElementById('timeDuration').value) || 300;
+      document.getElementById('timeLeft').innerText = dur + 'с';
+
+      const input = document.getElementById('typingInput');
+      input.value = '';
+      input.disabled = true;
+      document.getElementById('startBtn').innerText = '▶ Дасгалыг эхлэх';
+      document.getElementById('textDisplay').innerText = 'Дээрх "Эхлэх" товчийг дарж бичлэгээ эхэлнэ үү.';
+    }
+
+    function renderWords() {
+      const display = document.getElementById('textDisplay');
+      display.innerHTML = '';
+      wordsList.forEach((w, idx) => {
+        const span = document.createElement('span');
+        span.id = 'word-' + idx;
+        span.className = 'word' + (idx === 0 ? ' active' : '');
+        span.innerText = w;
+        display.appendChild(span);
+      });
+    }
+
+    function toggleExercise() {
+      if (isRunning) {
+        stopExercise();
+      } else {
+        startExercise();
+      }
+    }
+
+    function startExercise() {
+      const name = document.getElementById('studentName').value.trim();
+
+      if (!name) {
+        alert("Эхлэхээс өмнө сурагчийн нэрээ оруулна уу!");
+        document.getElementById('studentName').focus();
+        return;
+      }
+
+      const raw = rawTexts[currentCategory].trim().split(/\s+/);
+      wordsList = shuffle(raw);
+
+      correctCount = 0;
+      mistakeCount = 0;
+      currentWordIndex = 0;
+      totalTime = parseInt(document.getElementById('timeDuration').value) || 300;
+      timeLeft = totalTime;
+
+      document.getElementById('correctWordsCount').innerText = '0';
+      document.getElementById('mistakeCount').innerText = '0';
+      document.getElementById('wpmCount').innerText = '0';
+      document.getElementById('timeLeft').innerText = timeLeft + 'с';
+      document.getElementById('sheetStatus').className = 'sheet-status';
+
+      renderWords();
+
+      const input = document.getElementById('typingInput');
+      input.disabled = false;
+      input.value = '';
+      input.focus();
+
+      document.getElementById('startBtn').innerText = '⏹ Зогсоох';
+      isRunning = true;
+
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timeLeft').innerText = timeLeft + 'с';
+
+        const timeSpent = (totalTime - timeLeft) / 60;
+        if (timeSpent > 0) {
+          const wpm = Math.round(correctCount / timeSpent);
+          document.getElementById('wpmCount').innerText = wpm;
+        }
+
+        if (timeLeft <= 0) {
+          finishExercise();
+        }
+      }, 1000);
+    }
+
+    function stopExercise() {
+      clearInterval(timer);
+      isRunning = false;
+      document.getElementById('typingInput').disabled = true;
+      document.getElementById('startBtn').innerText = '▶ Дасгалыг эхлэх';
+    }
+
+    function finishExercise() {
+      stopExercise();
+      const wpm = document.getElementById('wpmCount').innerText;
+      const sName = document.getElementById('studentName').value.trim();
+      const sGrade = document.getElementById('studentGrade').value.trim();
+      const pcNum = document.getElementById('pcNumber').value.trim();
+
+      const recordItem = {
+        date: new Date().toLocaleString(),
+        grade: sGrade,
+        studentName: sName,
+        pcNumber: pcNum,
+        category: categoryTitles[currentCategory],
+        correctWords: correctCount,
+        mistakes: mistakeCount,
+        wpm: wpm,
+        duration: totalTime + " сек"
+      };
+
+      saveRecordLocally(recordItem);
+      sendDataToGoogleSheet(recordItem);
+
+      alert(`Цаг дууслаа!\nСурагч: ${sName}\nЗөв бичсэн үг: ${correctCount}\nАлдсан: ${mistakeCount}\nХурд: ${wpm} WPM`);
+
+      // ★ ДАСГАЛ ДУУССАНЫ ДАРАА БҮХ ТАЛБАРЫГ (НЭР, АНГИ, PC ДУГААР) АВТОМАТААР БҮРЭН АРИЛГАНА
+      clearAllStudentInputs();
+    }
+
+    function saveRecordLocally(item) {
+      let records = JSON.parse(localStorage.getItem('student_records') || '[]');
+      records.unshift(item);
+      localStorage.setItem('student_records', JSON.stringify(records));
+    }
+
+    function sendDataToGoogleSheet(data) {
+      const url = getScriptUrl();
+      const statusBox = document.getElementById('sheetStatus');
+
+      if (!url) {
+        statusBox.innerText = "⚠️ Google Script URL тохируулаагүй байна ('Бүртгэл' цэснээс тохируулна уу).";
+        statusBox.className = "sheet-status loading";
+        return;
+      }
+
+      statusBox.innerText = "Google Sheet рүү дүнг илгээж байна...";
+      statusBox.className = "sheet-status loading";
+
+      fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        statusBox.innerText = "✓ Google Sheet дээр амжилттай хадгалагдлаа!";
+        statusBox.className = "sheet-status success";
+      })
+      .catch((err) => {
+        console.error(err);
+        statusBox.innerText = "✕ Дүн илгээхэд алдаа гарлаа.";
+        statusBox.className = "sheet-status error";
+      });
+    }
+
+    // Space / Enter дарахад үг шалгах
+    const typingInput = document.getElementById('typingInput');
+    typingInput.addEventListener('keydown', function(e) {
+      if (!isRunning) return;
+
+      if (e.code === 'Space' || e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        const currentTyped = this.value.trim();
+        if (currentTyped.length === 0) return;
+
+        const targetWord = wordsList[currentWordIndex];
+        const currentSpan = document.getElementById('word-' + currentWordIndex);
+
+        if (currentTyped === targetWord) {
+          correctCount++;
+          document.getElementById('correctWordsCount').innerText = correctCount;
+          if (currentSpan) currentSpan.className = 'word correct';
+        } else {
+          mistakeCount++;
+          document.getElementById('mistakeCount').innerText = mistakeCount;
+          if (currentSpan) currentSpan.className = 'word incorrect';
+        }
+
+        this.value = '';
+        currentWordIndex++;
+
+        if (currentWordIndex >= wordsList.length) {
+          wordsList = shuffle(rawTexts[currentCategory].trim().split(/\s+/));
+          currentWordIndex = 0;
+          renderWords();
+        } else {
+          const nextSpan = document.getElementById('word-' + currentWordIndex);
+          if (nextSpan) {
+            nextSpan.className = 'word active';
+            nextSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      }
+    });
+
+    // Бүртгэлийн жагсаалт харуулах
+    function renderRecordsTable() {
+      const tbody = document.getElementById('recordsTableBody');
+      const records = JSON.parse(localStorage.getItem('student_records') || '[]');
+
+      if (records.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#94a3b8; padding:20px;">Одоогоор бүртгэл хоосон байна.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = records.map(r => `
+        <tr>
+          <td>${r.date}</td>
+          <td><b>${r.grade || '-'}</b></td>
+          <td><b>${r.studentName || '-'}</b></td>
+          <td>${r.pcNumber || '-'}</td>
+          <td>${r.category}</td>
+          <td style="color:#16a34a; font-weight:bold;">${r.correctWords}</td>
+          <td style="color:#dc2626; font-weight:bold;">${r.mistakes}</td>
+          <td style="color:#4f46e5; font-weight:bold;">${r.wpm}</td>
+          <td>${r.duration}</td>
+        </tr>
+      `).join('');
+    }
+
+    function exportToCSV() {
+      const records = JSON.parse(localStorage.getItem('student_records') || '[]');
+      if (records.length === 0) {
+        alert("Татаж авах бүртгэл байхгүй байна.");
+        return;
+      }
+
+      let csv = "\uFEFFОгноо,Анги,Сурагчийн нэр,Компьютер,Дасгал,Зөв үг,Алдаа,Хурд(WPM),Хугацаа\n";
+      records.forEach(r => {
+        csv += `"${r.date}","${r.grade}","${r.studentName}","${r.pcNumber}","${r.category}",${r.correctWords},${r.mistakes},${r.wpm},"${r.duration}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute("download", `10_хуруу_бүртгэл_${new Date().toLocaleDateString()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function clearLocalRecords() {
+      if (confirm("Бүх хадгалагдсан түүхийг устгах уу?")) {
+        localStorage.removeItem('student_records');
+        renderRecordsTable();
+      }
+    }
+  </script>
+</body>
+</html>
